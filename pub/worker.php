@@ -20,7 +20,10 @@ HTML;
 
 try {
     require __DIR__ . '/../app/bootstrap.php';
-} catch (\Exception $e) {
+} catch (\Throwable $e) {
+    // Autoload failure happens before the request loop — the worker cannot
+    // function, so exit(1) is correct. We catch \Throwable (not just \Exception)
+    // to also handle \Error and \ParseError from broken autoload chains.
     echo <<<HTML
 <div style="font:12px/1.35em arial, helvetica, sans-serif;">
     <div style="margin:0 0 25px 0; border-bottom:1px solid #ccc;">
@@ -42,9 +45,27 @@ $handler = static function () use ($bootstrapPool, $frankengento): void {
         if ($app !== null) {
             $bootstrap->run($app);
         }
-    } catch (\Magento\Framework\Exception\LocalizedException $e) {
-        echo $e->getMessage();
-        exit(1);
+    } catch (\Throwable $e) {
+        // Catch \Throwable (not just LocalizedException) so a single bad request
+        // can never tear down the worker process. exit() inside the handler would
+        // kill the entire PHP worker, forcing FrankenPHP to respawn and re-bootstrap
+        // Magento — the exact failure mode worker mode is meant to prevent.
+        //
+        // The exception is written directly to STDERR so it's captured by
+        // FrankenPHP / container log drivers regardless of how the operator
+        // configured php.ini's error_log directive. A generic 500 is returned;
+        // $e->getMessage() is intentionally NOT echoed to the response body
+        // because it can leak filesystem paths, SQL, credentials, etc.
+        if (!headers_sent()) {
+            http_response_code(500);
+        }
+        fwrite(STDERR, sprintf(
+            "[opengento/frankenphp-base] Uncaught %s in worker handler: %s at %s:%d\n",
+            $e::class,
+            $e->getMessage(),
+            $e->getFile(),
+            $e->getLine()
+        ));
     }
 };
 
