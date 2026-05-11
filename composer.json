@@ -52,6 +52,10 @@
             [
                 "pub/static.php",
                 "pub/static.php"
+            ],
+            [
+                "pub/get.php",
+                "pub/get.php"
             ]
         ]
     }
