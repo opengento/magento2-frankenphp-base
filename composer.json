@@ -10,13 +10,14 @@
     ],
     "require": {
         "magento/magento2-base": "*",
-        "opengento/module-application": ">=0.5"
+        "opengento/module-application": ">=0.5",
+        "composer-plugin-api": "^2.0"
     },
     "require-dev": {
         "magento/magento-coding-standard": "^33",
         "roave/security-advisories": "dev-latest"
     },
-    "type": "magento2-component",
+    "type": "composer-plugin",
     "license": [
         "MIT"
     ],
@@ -40,19 +41,11 @@
         "issues": "https://github.com/opengento/magento2-application/issues"
     },
     "extra": {
-        "map": [
-            [
-                "pub/worker.php",
-                "pub/worker.php"
-            ],
-            [
-                "pub/index.php",
-                "pub/index.php"
-            ],
-            [
-                "pub/static.php",
-                "pub/static.php"
-            ]
-        ]
+        "class": "Opengento\\FrankenPhpBase\\Composer\\EnforcePubFilesPlugin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Opengento\\FrankenPhpBase\\Composer\\": "src/Composer/"
+        }
     }
 }
