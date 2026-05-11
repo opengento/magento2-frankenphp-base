@@ -52,4 +52,4 @@ $maxRequests = (int)($_SERVER['MAX_REQUESTS'] ?? 0);
 $nbRequests = 1;
 do {
     $keepRunning = \frankenphp_handle_request($handler);
-} while ($keepRunning && !$maxRequests && $nbRequests++ < $maxRequests);
+} while ($keepRunning && (!$maxRequests || $nbRequests++ < $maxRequests));
