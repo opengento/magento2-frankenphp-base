@@ -9,6 +9,8 @@
         "application"
     ],
     "require": {
+        "composer-plugin-api": "^1.1 || ^2.0",
+        "composer/composer": "^1.9 || ^2.0",
         "magento/magento-composer-installer": "*",
         "magento/magento2-base": "*",
         "opengento/module-application": ">=0.9"
