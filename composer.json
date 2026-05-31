@@ -9,6 +9,7 @@
         "application"
     ],
     "require": {
+        "magento/magento-composer-installer": "*",
         "magento/magento2-base": "*",
         "opengento/module-application": ">=0.9"
     },
@@ -39,7 +40,13 @@
         "source": "https://github.com/opengento/magento2-application",
         "issues": "https://github.com/opengento/magento2-application/issues"
     },
+    "autoload": {
+        "psr-4": {
+            "Opengento\\FrankenPhpBase\\": "src/"
+        }
+    },
     "extra": {
+        "class": "Opengento\\FrankenPhpBase\\Composer\\Plugin",
         "map": [
             [
                 "pub/worker.php",
