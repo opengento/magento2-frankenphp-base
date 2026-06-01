@@ -11,7 +11,7 @@
     "require": {
         "magento/magento-composer-installer": "*",
         "magento/magento2-base": "*",
-        "opengento/module-application": ">=0.9"
+        "opengento/module-application": ">=0.9",
         "opengento/magento2-frankenphp-plugin": ">=0.4"
     },
     "require-dev": {
