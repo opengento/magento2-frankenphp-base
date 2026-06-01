@@ -9,8 +9,6 @@
         "application"
     ],
     "require": {
-        "composer-plugin-api": "^1.1 || ^2.0",
-        "composer/composer": "^1.9 || ^2.0",
         "magento/magento-composer-installer": "*",
         "magento/magento2-base": "*",
         "opengento/module-application": ">=0.9"
@@ -23,7 +21,7 @@
     "license": [
         "MIT"
     ],
-    "homepage": "https://github.com/opengento/magento2-application",
+    "homepage": "https://github.com/opengento/magento2-frankenphp-base",
     "authors": [
         {
             "name": "Opengento Team",
@@ -39,16 +37,10 @@
         }
     ],
     "support": {
-        "source": "https://github.com/opengento/magento2-application",
-        "issues": "https://github.com/opengento/magento2-application/issues"
-    },
-    "autoload": {
-        "psr-4": {
-            "Opengento\\FrankenPhpBase\\": "src/"
-        }
+        "source": "https://github.com/opengento/magento2-frankenphp-base",
+        "issues": "https://github.com/opengento/magento2-frankenphp-base/issues"
     },
     "extra": {
-        "class": "Opengento\\FrankenPhpBase\\Composer\\Plugin",
         "map": [
             [
                 "pub/worker.php",
