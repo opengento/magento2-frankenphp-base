@@ -34,22 +34,14 @@ HTML;
     exit(1);
 }
 
-$bootstrapPool = new \Opengento\Application\ObjectManager\BootstrapPool($_SERVER);
-$handler = static function () use ($bootstrapPool, $frankengento): void {
-    try {
-        $bootstrap = $bootstrapPool->get($_SERVER, $_GET);
-        $app = $bootstrap->createApplication($frankengento);
-        if ($app !== null) {
-            $bootstrap->run($app);
-        }
-    } catch (\Magento\Framework\Exception\LocalizedException $e) {
-        echo $e->getMessage();
-        exit(1);
-    }
+$kernel = new \Opengento\Application\Kernel($_SERVER, $frankengento);
+$handler = static function(): void {
+    $kernel->handle($_SERVER, $_GET);
 };
 
 $maxRequests = (int)($_SERVER['MAX_REQUESTS'] ?? 0);
 $nbRequests = 1;
 do {
     $keepRunning = \frankenphp_handle_request($handler);
+    $kernel->terminate();
 } while ($keepRunning && (!$maxRequests || $nbRequests++ < $maxRequests));
