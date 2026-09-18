@@ -35,13 +35,9 @@ HTML;
 }
 
 $kernel = new \Opengento\Application\Kernel($_SERVER, $frankengento);
-$handler = static function(): void {
-    $kernel->handle($_SERVER, $_GET);
-};
-
 $maxRequests = (int)($_SERVER['MAX_REQUESTS'] ?? 0);
 $nbRequests = 1;
 do {
-    $keepRunning = \frankenphp_handle_request($handler);
+    $keepRunning = \frankenphp_handle_request(static fn() => $kernel->handle($_SERVER, $_GET));
     $kernel->terminate();
 } while ($keepRunning && (!$maxRequests || $nbRequests++ < $maxRequests));
